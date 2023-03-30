@@ -91,7 +91,7 @@ def run(configs,
     best_val_score = 0
     # train it
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=5, factor=0.3)
-    while steps < configs.max_steps and epoch < 400:  # for epoch in range(num_epochs):
+    while steps < configs.max_steps and epoch < 100:  # for epoch in range(num_epochs):
         print('Step {}/{}'.format(steps, configs.max_steps))
         print('-' * 10)
 
@@ -195,15 +195,19 @@ if __name__ == '__main__':
     # WLASL setting
     mode = 'rgb'
     root = {'word': '../../data/videos'}
-
     save_model = 'checkpoints/'
-    train_split = 'preprocess/nslt_2000.json'
 
-    weights = 'archived/asl2000/FINAL_nslt_2000_iters=5104_top1=32.48_top5=57.31_top10=66.31.pt'
+    # ************************************ train nslt_2000 ********************************** #
+    # train_split = 'preprocess/nslt_2000.json'
+    # weights = 'archived/asl2000/FINAL_nslt_2000_iters=5104_top1=32.48_top5=57.31_top10=66.31.pt'
+    # config_file = 'configfiles/asl2000.ini'
+
+    # ************************************ train nslt_100 *********************************** #
+    weights = 'archived/asl100/FINAL_nslt_100_iters=896_top1=65.89_top5=84.11_top10=89.92.pt'
+    config_file = 'configfiles/asl100.ini'
+    train_split = 'preprocess/nslt_100.json'
+
     # weights = None
-    # weights ='archived/asl100/FINAL_nslt_100_iters=896_top1=65.89_top5=84.11_top10=89.92.pt'
-    config_file = 'configfiles/asl2000.ini'
-
     configs = Config(config_file)
     print(root, train_split)
     run(configs=configs, mode=mode, root=root, save_model=save_model, train_split=train_split, weights=weights)

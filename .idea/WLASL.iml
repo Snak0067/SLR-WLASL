@@ -4,6 +4,8 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/data" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/code/I3D/archived" />
+      <excludeFolder url="file://$MODULE_DIR$/start_kit/raw_videos" />
     </content>
     <orderEntry type="jdk" jdkName="pytorch-gpu" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

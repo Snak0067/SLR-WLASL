@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c4a1aac8-2dcb-4474-b7a4-7f8b73636dad" name="A110">
+        <fileTransfer rootFolder="/root/autodl-nas/WLASL" accessType="SFTP" host="222.187.226.110" port="38666" sshConfigId="fcb8a5a6-dfa1-4743-b0c9-09d80cfb21dd" sshConfig="root@222.187.226.110:38666 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="84e56d35-ac59-4ab2-9094-1ce6f7ad654e" name="A026">
+        <fileTransfer rootFolder="/root/autodl-nas/WLASL" accessType="SFTP" host="222.187.226.110" port="38666" sshConfigId="fcb8a5a6-dfa1-4743-b0c9-09d80cfb21dd" sshConfig="root@222.187.226.110:38666 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -2,6 +2,12 @@ import configparser
 
 
 class Config:
+    """
+    该文件是一个Python模块，主要定义了一个名为Config的类，在初始化时会读取一个配置文件，并将该文件中的参数值解析出来。
+    该配置文件中包含了训练和优化器的参数，其中训练参数包括 batch size、最大迭代次数和每次迭代的更新步长；
+    优化器参数包括初始学习率、Adam优化器的epsilon值和权重衰减。除此之外，文件还定义了该类的一个__str__方法,用于返回一个包含各个参数值的字符串。
+    在文件的最后，还包含了一个主函数，用于测试Config类的功能。
+    """
     def __init__(self, config_path):
         config = configparser.ConfigParser()
         config.read(config_path)

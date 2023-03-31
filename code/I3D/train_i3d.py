@@ -1,24 +1,29 @@
-import os
 import argparse
+import os
 
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.autograd import Variable
-from torch.optim.lr_scheduler import StepLR, MultiStepLR
-
 from torchvision import transforms
+
 import videotransforms
-
-import numpy as np
-
 from configs import Config
-from pytorch_i3d import InceptionI3d
-
 # from datasets.nslt_dataset import NSLT as Dataset
 from datasets.nslt_dataset import NSLT as Dataset
+from pytorch_i3d import InceptionI3d
 
+"""
+该文件是训练I3D模型的代码。其功能包括：
+
+1、导入所需的库和模块；
+2、定义函数 run()，用于训练模型；
+3、定义 argparse()，用于设置程序参数；
+4、设置随机数种子，以保证训练的重复性；
+5、调用 run() 函数进行模型训练；
+6、程序入口，开始执行
+"""
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 

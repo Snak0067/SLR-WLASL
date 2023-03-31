@@ -19,6 +19,9 @@ from pytorch_i3d import InceptionI3d
 from datasets.nslt_dataset_all import NSLT as Dataset
 import cv2
 
+"""
+该程序文件使用了 PyTorch 实现的 InceptionI3d 网络对视频进行分类。它包括三个函数，分别是 run()、ensemble() 和 run_on_tensor()。
+"""
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = '0'
@@ -62,6 +65,10 @@ def run(init_lr=0.1,
         batch_size=3 * 15,
         save_model='',
         weights=None):
+    """
+    函数根据输入的参数读取测试数据集，并使用预先训练好的权重进行分类。
+    它还实现了 top-1、top-5 和 top-10 的分类指标，并计算输出每个类别的准确率
+    """
     # setup dataset
     test_transforms = transforms.Compose([videotransforms.CenterCrop(224)])
 
@@ -81,7 +88,8 @@ def run(init_lr=0.1,
         i3d = InceptionI3d(400, in_channels=3)
         i3d.load_state_dict(torch.load('weights/rgb_imagenet.pt'))
     i3d.replace_logits(num_classes)
-    i3d.load_state_dict(torch.load(weights))  # nslt_2000_000700.pt nslt_1000_010800 nslt_300_005100.pt(best_results)  nslt_300_005500.pt(results_reported) nslt_2000_011400
+    i3d.load_state_dict(torch.load(
+        weights))  # nslt_2000_000700.pt nslt_1000_010800 nslt_300_005100.pt(best_results)  nslt_300_005500.pt(results_reported) nslt_2000_011400
     i3d.cuda()
     i3d = nn.DataParallel(i3d)
     i3d.eval()
@@ -134,6 +142,18 @@ def run(init_lr=0.1,
 
 
 def ensemble(mode, root, train_split, weights, num_classes):
+    """
+    ensemble() 函数与 run() 函数类似，但是使用多帧决策的形式，通过滑动窗口（类似于卷积操作）对视频进行分类。
+    Args:
+        mode:
+        root:
+        train_split:
+        weights:
+        num_classes:
+
+    Returns:
+
+    """
     # setup dataset
     test_transforms = transforms.Compose([videotransforms.CenterCrop(224)])
     # test_transforms = transforms.Compose([])
@@ -154,7 +174,8 @@ def ensemble(mode, root, train_split, weights, num_classes):
         i3d = InceptionI3d(400, in_channels=3)
         i3d.load_state_dict(torch.load('weights/rgb_imagenet.pt'))
     i3d.replace_logits(num_classes)
-    i3d.load_state_dict(torch.load(weights))  # nslt_2000_000700.pt nslt_1000_010800 nslt_300_005100.pt(best_results)  nslt_300_005500.pt(results_reported) nslt_2000_011400
+    i3d.load_state_dict(torch.load(
+        weights))  # nslt_2000_000700.pt nslt_1000_010800 nslt_300_005100.pt(best_results)  nslt_300_005500.pt(results_reported) nslt_2000_011400
     i3d.cuda()
     i3d = nn.DataParallel(i3d)
     i3d.eval()
@@ -183,7 +204,7 @@ def ensemble(mode, root, train_split, weights, num_classes):
 
             segments = []
             for k in range(num_segments):
-                segments.append(inputs[:, :, k*num: (k+1)*num, :, :])
+                segments.append(inputs[:, :, k * num: (k + 1) * num, :, :])
 
             segments = torch.cat(segments, dim=0)
             per_frame_logits = i3d(segments)
@@ -224,11 +245,22 @@ def ensemble(mode, root, train_split, weights, num_classes):
 
 
 def run_on_tensor(weights, ip_tensor, num_classes):
+    """
+    run_on_tensor()函数是基于单个视频帧进行测试的。其中，输入的视频片段被向前传递到 I3D 模型，并输出预测类别的序号。
+    Args:
+        weights:
+        ip_tensor:
+        num_classes:
+
+    Returns:
+
+    """
     i3d = InceptionI3d(400, in_channels=3)
     # i3d.load_state_dict(torch.load('models/rgb_imagenet.pt'))
 
     i3d.replace_logits(num_classes)
-    i3d.load_state_dict(torch.load(weights))  # nslt_2000_000700.pt nslt_1000_010800 nslt_300_005100.pt(best_results)  nslt_300_005500.pt(results_reported) nslt_2000_011400
+    i3d.load_state_dict(torch.load(
+        weights))  # nslt_2000_000700.pt nslt_1000_010800 nslt_300_005100.pt(best_results)  nslt_300_005500.pt(results_reported) nslt_2000_011400
     i3d.cuda()
     i3d = nn.DataParallel(i3d)
     i3d.eval()
@@ -242,7 +274,7 @@ def run_on_tensor(weights, ip_tensor, num_classes):
     predictions = predictions.transpose(2, 1)
     out_labels = np.argsort(predictions.cpu().detach().numpy()[0])
 
-    arr = predictions.cpu().detach().numpy()[0,:,0].T
+    arr = predictions.cpu().detach().numpy()[0, :, 0].T
 
     plt.plot(range(len(arr)), F.softmax(torch.from_numpy(arr), dim=0).numpy())
     plt.show()

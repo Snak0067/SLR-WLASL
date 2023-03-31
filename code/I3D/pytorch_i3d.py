@@ -9,8 +9,13 @@ import os
 import sys
 from collections import OrderedDict
 
+"""程序是基于PyTorch实现的3D Inception模型（Inception-v1 I3D），用于视频分类任务。模型主要包含以下模块："""
+
 
 class MaxPool3dSamePadding(nn.MaxPool3d):
+    """
+    与PyTorch自带的MaxPool3d模块类似，但可以在保持输入输出维度大小一致的同时进行池化操作。
+    """
 
     def compute_pad(self, dim, s):
         if s % self.stride[dim] == 0:
@@ -46,6 +51,9 @@ class MaxPool3dSamePadding(nn.MaxPool3d):
 
 
 class Unit3D(nn.Module):
+    """
+    3D卷积模块，包含卷积、批归一化、激活等操作。
+    """
 
     def __init__(self, in_channels,
                  output_channels,
@@ -122,6 +130,10 @@ class Unit3D(nn.Module):
 
 
 class InceptionModule(nn.Module):
+    """
+    包含多个分支的Inception模块，用于对输入进行卷积、拼接等操作。
+    """
+
     def __init__(self, in_channels, out_channels, name):
         super(InceptionModule, self).__init__()
 
@@ -150,7 +162,8 @@ class InceptionModule(nn.Module):
 
 
 class InceptionI3d(nn.Module):
-    """Inception-v1 I3D architecture.
+    """
+    基于多个InceptionModule构建的Inception-v1 I3D architecture.
     The model is introduced in:
         Quo Vadis, Action Recognition? A New Model and the Kinetics Dataset
         Joao Carreira, Andrew Zisserman

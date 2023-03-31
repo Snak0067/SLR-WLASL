@@ -4,7 +4,8 @@ import random
 
 
 class RandomCrop(object):
-    """在随机位置裁剪给定的视频序列（t x h x w）.
+    """
+    在给定的视频序列中随机裁剪出指定的输出大,裁剪给定的视频序列（t x h x w）.
     Args:
         size (sequence or int): 裁剪所需的输出大小。如果size是int而不是（h，w）这样的序列，则生成方形裁剪（size，size）
     """
@@ -47,6 +48,7 @@ class RandomCrop(object):
 
 class CenterCrop(object):
     """Crops the given seq Images at the center.
+    在给定的视频序列中裁剪出中央指定大小的视频序列。
     Args:
         size (sequence or int): Desired output size of the crop. If size is an
             int instead of sequence like (h, w), a square crop (size, size) is
@@ -79,6 +81,7 @@ class CenterCrop(object):
 
 class RandomHorizontalFlip(object):
     """Horizontally flip the given seq Images randomly with a given probability.
+    给定一定概率，以随机方式水平翻转输入的视频序列。
     Args:
         p (float): probability of the image being flipped. Default value is 0.5
     """

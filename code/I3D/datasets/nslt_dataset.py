@@ -12,9 +12,9 @@ from tqdm import tqdm
 
 
 def video_to_tensor(pic):
-    """Convert a ``numpy.ndarray`` to tensor.
-    Converts a numpy.ndarray (T x H x W x C)
-    to a torch.FloatTensor of shape (C x T x H x W)
+    """
+    将numpy.ndarray转换为张量。
+    将numpy.ndarray（T x H x W x C）转换为torch.FloatTensor形状（C x T x H x W）
     
     Args:
          pic (numpy.ndarray): Video to be converted to tensor.
@@ -25,6 +25,9 @@ def video_to_tensor(pic):
 
 
 def load_rgb_frames(image_dir, vid, start, num):
+    """
+    从文件夹中读取RGB帧,对于RGB帧，函数将读取每个帧的图片，并进行缩放和归一化。
+    """
     frames = []
     # 神经网络为每个输入帧生成全局表示，并将这些表示用于识别
     for i in range(start, start + num):
@@ -43,6 +46,10 @@ def load_rgb_frames(image_dir, vid, start, num):
 
 
 def load_rgb_frames_from_video(vid_root, vid, start, num, resize=(256, 256)):
+    """
+    从视频中读取带有RGB帧的函数load_rgb_frames_from_video。
+    从视频文件中读取每个帧的大小，并在需要时进行缩放和归一化。
+    """
     video_path = os.path.join(vid_root, vid + '.mp4')
 
     vidcap = cv2.VideoCapture(video_path)
@@ -73,6 +80,10 @@ def load_rgb_frames_from_video(vid_root, vid, start, num, resize=(256, 256)):
 
 
 def load_flow_frames(image_dir, vid, start, num):
+    """
+    从文件夹中读取光流帧,
+    对于光流帧，该函数将读取并处理每个帧的水平和垂直部分。
+    """
     frames = []
     for i in range(start, start + num):
         imgx = cv2.imread(os.path.join(image_dir, vid, vid + '-' + str(i).zfill(6) + 'x.jpg'), cv2.IMREAD_GRAYSCALE)
@@ -93,6 +104,10 @@ def load_flow_frames(image_dir, vid, start, num):
 
 
 def make_dataset(split_file, split, root, mode, num_classes):
+    """生成数据集。
+    读取数据集的JSON文件并将其分为训练集，验证集和测试集。
+    对于每个视频文件，它将读取它并添加其标签。计算每个视频文件应有的预期总帧数。
+    """
     # 对数据集进行分类train、test、validate
     dataset = []
     with open(split_file, 'r') as f:
@@ -144,6 +159,9 @@ def make_dataset(split_file, split, root, mode, num_classes):
 
 
 def get_num_class(split_file):
+    """
+    获取数据集中不同标签数量
+    """
     classes = set()
 
     content = json.load(open(split_file))
@@ -156,6 +174,10 @@ def get_num_class(split_file):
 
 
 class NSLT(data_utl.Dataset):
+    """
+    继承于torch.utils.data.Dataset类的NSLT数据集类。
+    它用于在训练神经网络时从数据集中加载数据。它生成了一个元组，其中包含张量的RGB帧，标签和视频ID。
+    """
 
     def __init__(self, split_file, split, root, mode, transforms=None):
         self.num_classes = get_num_class(split_file)

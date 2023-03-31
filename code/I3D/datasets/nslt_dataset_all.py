@@ -7,6 +7,11 @@ import numpy as np
 import torch
 import torch.utils.data as data_utl
 
+"""
+本程序文件是一个数据集处理的代码文件，包含了一个名为NSLT的类，
+该类继承了torch.utils.data.Dataset，并用于加载&预处理NSLT数据集中的RGB格式和光流格式数据。
+"""
+
 
 def video_to_tensor(pic):
     """Convert a ``numpy.ndarray`` to tensor.
@@ -122,8 +127,21 @@ def get_num_class(split_file):
 
 
 class NSLT(data_utl.Dataset):
+    """
+    用于加载&预处理NSLT数据集中的RGB格式和光流格式数据。
+    """
 
     def __init__(self, split_file, split, root, mode, transforms=None):
+        """
+        用于初始化数据集，读取分割文件，准备分割文件的相关必要信息，
+            包括root(数据集路径)，mode(处理模式), num_classes(数据集分类数量)、transforms(数据增强操作)等。
+        Args:
+            split_file:
+            split:
+            root: 数据集路径
+            mode: 处理模式
+            transforms: 数据增强操作
+        """
         self.num_classes = get_num_class(split_file)
 
         self.data = make_dataset(split_file, split, root, mode, self.num_classes)
@@ -134,11 +152,13 @@ class NSLT(data_utl.Dataset):
 
     def __getitem__(self, index):
         """
+        根据输入参数加载方法加载视频的RGB图像帧或光流图像帧，并将图像数据归一化处理。该方法还返回相应的标签和样本ID等信息。
         Args:
             index (int): Index
 
         Returns:
             tuple: (image, target) where target is class_index of the target class.
+            返回相应的标签和样本ID等信息。
         """
         vid, label, start_f, start_e, output_name = self.data[index]
 
@@ -155,4 +175,8 @@ class NSLT(data_utl.Dataset):
         return ret_img, label, vid
 
     def __len__(self):
+        """
+        Returns: 返回数据集的长度即包含多少个样本。
+
+        """
         return len(self.data)

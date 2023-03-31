@@ -5,8 +5,26 @@ import time
 from multiprocessing import Pool
 import torch
 
+"""
+用于为动作识别模型生成特征文件
+1、导入所需的Python包。
+2、编写函数"compute_difference"，用于计算数据点之间的差异，并返回差异的结果。
+3、编写函数"gen"，用于为每个行为实例（behavior instance）生成特征，并将特征保存到相应的文件中。
+4、读取行为实例的索引文件，并拆分为3个子列表。
+5、利用多进程并行计算，将特征文件生成函数"gen"应用到3个子列表中的每个行为实例上。
+6、输出生成特征文件所用的时间。
+"""
+
 
 def compute_difference(x):
+    """
+    计算数据点之间的差异，并返回差异的结果
+    Args:
+        x: 数据
+
+    Returns: 差异结果
+
+    """
     diff = []
 
     for i, xx in enumerate(x):
@@ -21,6 +39,11 @@ def compute_difference(x):
 
 
 def gen(entry_list):
+    """
+    为每个行为实例（behavior instance）生成特征，并将特征保存到相应的文件中。
+    Args:
+        entry_list: 行为实例
+    """
     for i, entry in enumerate(entry_list):
         for instance in entry['instances']:
             vid = instance['video_id']
@@ -39,8 +62,10 @@ def gen(entry_list):
                 ft_path = os.path.join(save_to, frame_id + '_ft.pt')
                 if not os.path.exists(ft_path):
                     try:
-                        pose_content = json.load(open(os.path.join('/home/dxli/workspace/nslt/data/pose/pose_per_individual_videos',
-                                                                   vid, frame_id + '_keypoints.json')))["people"][0]
+                        pose_content = \
+                            json.load(
+                                open(os.path.join('/home/dxli/workspace/nslt/data/pose/pose_per_individual_videos',
+                                                  vid, frame_id + '_keypoints.json')))["people"][0]
                     except IndexError:
                         continue
 
@@ -83,13 +108,12 @@ with open(index_file_path, 'r') as f:
 # create label encoder
 
 start_time = time.time()
-
+# 读取行为实例的索引文件，并拆分为3个子列表
 entries_1 = content[0: 700]
 entries_2 = content[700: 1400]
-entries_3 = content[1400: ]
+entries_3 = content[1400:]
 
 entry_splits = [entries_1, entries_2, entries_3]
-
+# 利用多进程并行计算，将特征文件生成函数"gen"应用到3个子列表中的每个行为实例上
 p = Pool(3)
 print(p.map(gen, entry_splits))
-

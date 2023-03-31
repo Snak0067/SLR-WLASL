@@ -2,6 +2,12 @@ import configparser
 
 
 class Config:
+    """
+    通过读取配置文件实现了相关的参数解析(将指定的配置文件读取并解析，并打印出其中的相关配置信息)
+    该程序通过ConfigParser从配置文件中读取了训练、优化器以及图卷积网络的相关配置，
+    然后将这些配置参数封装在Config类的属性中。
+    """
+
     def __init__(self, config_path):
         config = configparser.ConfigParser()
         config.read(config_path)
@@ -26,6 +32,10 @@ class Config:
         self.num_stages = int(gcn_config['NUM_STAGES'])
 
     def __str__(self):
+        """
+        Returns: 将类的实例转化为一个可读的字符串形式。
+
+        """
         return 'bs={}_ns={}_drop={}_lr={}_eps={}_wd={}'.format(
             self.batch_size, self.num_samples, self.drop_p, self.init_lr, self.adam_eps, self.adam_weight_decay
         )

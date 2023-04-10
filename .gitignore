@@ -4,6 +4,7 @@ start_kit/raw_videos/
 start_kit/raw_videos_mp4/
 start_kit/videos/
 data/
+code/I3D/checkpoints/
 venv/
 */__pycache__
 code/I3D/archived/

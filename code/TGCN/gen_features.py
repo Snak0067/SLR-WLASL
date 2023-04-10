@@ -51,7 +51,7 @@ def gen(entry_list):
             frame_start = instance['frame_start']
             frame_end = instance['frame_end']
 
-            save_to = os.path.join('/home/dxli/workspace/nslt/code/Pose-GCN/posegcn/features', vid)
+            save_to = os.path.join('D:/Code/PythonCode/SignLanguageProject/WLASL/data/pose_per_individual_videos', vid)
 
             if not os.path.exists(save_to):
                 os.mkdir(save_to)

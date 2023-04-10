@@ -16,6 +16,9 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 
 
 def compute_difference(x):
+    """
+    计算手语中的坐标差异
+    """
     diff = []
 
     for i, xx in enumerate(x):
@@ -30,6 +33,14 @@ def compute_difference(x):
 
 
 def read_pose_file(filepath):
+    """
+    从json文件中读取文件路径，并且将手语坐标（x，y）离散化并归一化到 -1 和 1之间
+    Args:
+        filepath: 文件路径
+
+    Returns:
+
+    """
     body_pose_exclude = {9, 10, 11, 22, 23, 24, 12, 13, 14, 19, 20, 21}
 
     try:
@@ -42,7 +53,7 @@ def read_pose_file(filepath):
     frame_id = path_parts[1][:11]
     vid = os.path.split(path_parts[0])[-1]
 
-    save_to = os.path.join('/home/dxli/workspace/nslt/code/Pose-GCN/posegcn/features', vid)
+    save_to = os.path.join('D:/Code/PythonCode/SignLanguageProject/WLASL/data/pose_per_individual_videos', vid)
 
     try:
         ft = torch.load(os.path.join(save_to, frame_id + '_ft.pt'))
@@ -86,7 +97,7 @@ def read_pose_file(filepath):
         frame_id = path_parts[1][:11]
         vid = os.path.split(path_parts[0])[-1]
 
-        save_to = os.path.join('code/Pose-GCN/posegcn/features', vid)
+        save_to = os.path.join('data/pose_per_individual_videos', vid)
         if not os.path.exists(save_to):
             os.mkdir(save_to)
         torch.save(ft, os.path.join(save_to, frame_id + '_ft.pt'))
@@ -189,6 +200,7 @@ class Sign_Dataset(Dataset):
 
         for i in frames_to_sample:
             pose_path = os.path.join(self.pose_root, video_id, self.framename.format(str(i).zfill(5)))
+            print(123,pose_path)
             # pose = cv2.imread(frame_path, cv2.COLOR_BGR2RGB)
             pose = read_pose_file(pose_path)
 
@@ -257,6 +269,17 @@ def sequential_sampling(frame_start, frame_end, num_samples):
 
 
 def k_copies_fixed_length_sequential_sampling(frame_start, frame_end, num_samples, num_copies):
+    """
+    从不同的连续段中选择固定数量的连续帧生成多个样本的策略。输出注释掉了元里面的测试数据会生成dataloader()
+    Args:
+        frame_start:
+        frame_end:
+        num_samples:
+        num_copies:
+
+    Returns:
+
+    """
     num_frames = frame_end - frame_start + 1
 
     frames_to_sample = []

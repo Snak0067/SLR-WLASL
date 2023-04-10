@@ -2,7 +2,7 @@ import os
 import json
 
 
-filenames = set(os.listdir('D:/sign_language/dataset/World Level American Sign Language/videos'))
+filenames = set(os.listdir('D:/Code/PythonCode/SignLanguageProject/WLASL/data/videos'))
 
 content = json.load(open('WLASL_v0.3.json'))
 

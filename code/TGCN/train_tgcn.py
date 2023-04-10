@@ -41,8 +41,9 @@ def run(split_file, pose_data_root, configs, save_model_to=None):
                                                      enumerate(train_dataset.label_encoder.classes_)]))
 
     # setup the model
-    model = GCN_muti_att(input_feature=num_samples*2, hidden_feature=num_samples*2,
-                         num_class=len(train_dataset.label_encoder.classes_), p_dropout=drop_p, num_stage=num_stages).cuda()
+    model = GCN_muti_att(input_feature=num_samples * 2, hidden_feature=num_samples * 2,
+                         num_class=len(train_dataset.label_encoder.classes_), p_dropout=drop_p,
+                         num_stage=num_stages).cuda()
 
     # setup training parameters, learning rate, optimizer, scheduler
     lr = configs.init_lr
@@ -108,16 +109,18 @@ def run(split_file, pose_data_root, configs, save_model_to=None):
 
 
 if __name__ == "__main__":
-    root = '\WLASL'
+    root = 'D:/Code/PythonCode/SignLanguageProject/WLASL'
 
     subset = 'asl100'
 
     split_file = os.path.join(root, 'data/splits/{}.json'.format(subset))
     pose_data_root = os.path.join(root, 'data/pose_per_individual_videos')
     config_file = os.path.join(root, 'code/TGCN/configs/{}.ini'.format(subset))
+    print(pose_data_root)
     configs = Config(config_file)
 
-    logging.basicConfig(filename='output/{}.log'.format(os.path.basename(config_file)[:-4]), level=logging.DEBUG, filemode='w+')
+    logging.basicConfig(filename='output/{}.log'.format(os.path.basename(config_file)[:-4]), level=logging.DEBUG,
+                        filemode='w+')
 
     logging.info('Calling main.run()')
     run(split_file=split_file, configs=configs, pose_data_root=pose_data_root)

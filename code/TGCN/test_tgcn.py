@@ -8,6 +8,13 @@ from sklearn.metrics import accuracy_score
 
 from tgcn_model import GCN_muti_att
 
+"""
+这个程序文件是用来测试TGNC模型在测试集上的分类性能的。
+从其他文件中导入Sign_Dataset（处理数据集）、GCN_muti_att（TGNC模型）和Config（配置文件）三个类。
+通过解析数据文件，选取合适的数据集并设置相应的测试参数，
+最终对TGNC模型进行测试，给出top-1, top-3, top-5, top-10准确率等性能参数。
+"""
+
 
 def test(model, test_loader):
     # set model as testing mode
@@ -86,7 +93,6 @@ def compute_top_n_accuracy(truths, preds, n):
 
 
 if __name__ == '__main__':
-
     # change root and subset accordingly.
     root = '/media/anudisk/github/WLASL'
     trained_on = 'asl2000'

@@ -8,7 +8,13 @@ from sklearn.metrics import accuracy_score
 
 from tgcn_model import GCN_muti_att
 
-
+"""
+本程序是在Torch框架下的TGCN模型对数据集进行测试的代码。
+程序导入了必要的库，并调用了“configs”、“sign_dataset”和“tgcn_model”三个模块中定义的类和函数。
+其中，“configs”模块为配置模块，“sign_dataset”模块为数据集模块，用于读取数据集中的数据，“tgcn_model”模块为模型模块，定义了TGCN模型。
+在测试阶段，模型使用“test_loader”（测试集中的数据加载器），并将测试结果记录在“val_loss”、“all_y”、“all_y_pred”、
+“all_video_ids”和“all_pool_out”等变量中。程序使用了top-k准确度和错误标签实例来评估模型。程序主要是通过调用“test”函数来完成测试。
+"""
 def test(model, test_loader):
     # set model as testing mode
     model.eval()

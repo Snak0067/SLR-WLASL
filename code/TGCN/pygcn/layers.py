@@ -9,11 +9,10 @@ from torch.nn.modules.module import Module
 class GraphConvolution(Module):
     """
     Simple GCN layer, similar to https://arxiv.org/abs/1609.02907
-    该文件是一个实现图卷积网络层的 Python 模块。
-    主要包含了一个名为 GraphConvolution 的类，用于构建图卷积层。其中使用了 PyTorch 框架提供的张量操作，如 mm 和 spmm。
-    在 GraphConvolution 类的初始化中，使用了 torch.nn.parameter 模块中的 Parameter 类来定义可学习参数（即权重和偏置），
-    并采用了 Xavier 初始化的方法。在 forward 函数中，通过矩阵乘法和稀疏矩阵乘法实现了图卷积操作。如果 bias 参数不为 None，
-    则输出结果会加上偏置值。最后，该文件还定义了 repr 函数，用于输出图卷积层的信息。
+    1、该文件是一个实现图卷积网络层的 Python 模块。
+    2、GraphConvolution用于构建图卷积层。其中使用了 PyTorch 框架提供的张量操作，如 mm 和 spmm。
+    3、GraphConvolution初始化使用了 torch.nn.parameter 模块中的 Parameter 类来定义可学习参数（即权重和偏置），并采用了 Xavier 初始化的方法。
+    4、在 forward 函数中，通过矩阵乘法和稀疏矩阵乘法实现了图卷积操作。如果 bias 参数不为 None,则输出结果会加上偏置值。最后，该文件还定义了 repr 函数，用于输出图卷积层的信息。
     """
 
     def __init__(self, in_features, out_features, bias=True):

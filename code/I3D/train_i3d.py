@@ -203,14 +203,14 @@ if __name__ == '__main__':
     save_model = 'checkpoints/'
 
     # ************************************ train nslt_2000 ********************************** #
-    # train_split = 'preprocess/nslt_2000.json'
-    # weights = 'archived/asl2000/FINAL_nslt_2000_iters=5104_top1=32.48_top5=57.31_top10=66.31.pt'
-    # config_file = 'configfiles/asl2000.ini'
+    train_split = 'preprocess/nslt_2000.json'
+    weights = 'archived/asl2000/FINAL_nslt_2000_iters=5104_top1=32.48_top5=57.31_top10=66.31.pt'
+    config_file = 'configfiles/asl2000.ini'
 
     # ************************************ train nslt_100 *********************************** #
-    weights = 'archived/asl100/FINAL_nslt_100_iters=896_top1=65.89_top5=84.11_top10=89.92.pt'
-    config_file = 'configfiles/asl100.ini'
-    train_split = 'preprocess/nslt_100.json'
+    # weights = 'archived/asl100/FINAL_nslt_100_iters=896_top1=65.89_top5=84.11_top10=89.92.pt'
+    # config_file = 'configfiles/asl100.ini'
+    # train_split = 'preprocess/nslt_100.json'
 
     # weights = None
     configs = Config(config_file)

@@ -127,7 +127,6 @@ def get_num_class(split_file):
     for vid in content.keys():
         class_id = content[vid]['action'][0]
         classes.add(class_id)
-    print(len(classes))
     return len(classes)
 
 

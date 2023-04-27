@@ -37,7 +37,8 @@ def load_rgb_frames_from_video(vid_root, vid, start, num):
     vidcap.set(cv2.CAP_PROP_POS_FRAMES, start)
     for offset in range(num):
         success, img = vidcap.read()
-
+        if not success:
+            continue
         w, h, c = img.shape
         if w < 226 or h < 226:
             d = 226. - min(w, h)
@@ -115,6 +116,10 @@ def make_dataset(split_file, split, root, mode, num_classes):
 
 
 def get_num_class(split_file):
+    """
+    得到输入的数据集的手语的种类，多个手语视频可能表达同一个gloss的意思，
+    所以用set来重叠相同的action，得到最终这个数据集包含了多少个gloss的种类
+    """
     classes = set()
 
     content = json.load(open(split_file))
@@ -122,7 +127,7 @@ def get_num_class(split_file):
     for vid in content.keys():
         class_id = content[vid]['action'][0]
         classes.add(class_id)
-
+    print(len(classes))
     return len(classes)
 
 
@@ -136,8 +141,8 @@ class NSLT(data_utl.Dataset):
         用于初始化数据集，读取分割文件，准备分割文件的相关必要信息，
             包括root(数据集路径)，mode(处理模式), num_classes(数据集分类数量)、transforms(数据增强操作)等。
         Args:
-            split_file:
-            split:
+            split_file: 手语数据集描述文件路径
+            split: 训练模式:train test validation
             root: 数据集路径
             mode: 处理模式
             transforms: 数据增强操作

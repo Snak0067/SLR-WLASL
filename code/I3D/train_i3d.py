@@ -199,7 +199,7 @@ def run(configs,
 if __name__ == '__main__':
     # WLASL setting
     mode = 'rgb'
-    root = {'word': '../../data/videos'}
+    root = {'word': '../../data/videos'   }
     save_model = 'checkpoints/'
 
     # ************************************ train nslt_2000 ********************************** #

@@ -20,7 +20,15 @@ from datasets.nslt_dataset_all import NSLT as Dataset
 import cv2
 
 """
-该程序文件使用了 PyTorch 实现的 InceptionI3d 网络对视频进行分类。它包括三个函数，分别是 run()、ensemble() 和 run_on_tensor()。
+这是一个使用PyTorch实现的InceptionI3d来进行视频分类的Python脚本，包括三个函数：run()、ensemble()和run_on_tensor()。
+
+run()函数根据输入参数读取测试数据集，并使用预训练的权重进行分类。它还计算了前1、前5和前10个分类指标，并输出每个类别的准确率。
+
+load_rgb_frames_from_video()函数从给定的视频路径加载帧，并将它们返回为张量。
+
+ensemble()函数对一组张量使用InceptionI3d模型进行集成预测。
+
+run_on_tensor()函数接收一个张量并使用InceptionI3d模型进行分类。
 """
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
@@ -35,7 +43,7 @@ args = parser.parse_args()
 
 def load_rgb_frames_from_video(video_path, start=0, num=-1):
     vidcap = cv2.VideoCapture(video_path)
-    # vidcap = cv2.VideoCapture('/home/dxli/Desktop/dm_256.mp4')
+    # vidcap = cv2.VideoCapture('D:/Code/PythonCode/SignLanguageProject/WLASL/data/videos/01226')
 
     frames = []
 
@@ -98,14 +106,14 @@ def run(init_lr=0.1,
     correct_5 = 0
     correct_10 = 0
 
-    top1_fp = np.zeros(num_classes, dtype=np.int32)
-    top1_tp = np.zeros(num_classes, dtype=np.int32)
+    top1_fp = np.zeros(num_classes, dtype=int)
+    top1_tp = np.zeros(num_classes, dtype=int)
 
-    top5_fp = np.zeros(num_classes, dtype=np.int32)
-    top5_tp = np.zeros(num_classes, dtype=np.int32)
+    top5_fp = np.zeros(num_classes, dtype=int)
+    top5_tp = np.zeros(num_classes, dtype=int)
 
-    top10_fp = np.zeros(num_classes, dtype=np.int32)
-    top10_tp = np.zeros(num_classes, dtype=np.int32)
+    top10_fp = np.zeros(num_classes, dtype=int)
+    top10_tp = np.zeros(num_classes, dtype=int)
 
     for data in dataloaders["test"]:
         inputs, labels, video_id = data  # inputs: b, c, t, h, w
@@ -293,12 +301,12 @@ if __name__ == '__main__':
     # ================== test i3d on a dataset ==============
     # need to add argparse
     mode = 'rgb'
-    num_classes = 2000
+    num_classes = 100
     save_model = './checkpoints/'
 
-    root = '../../data/WLASL2000'
+    root = '../../data/videos'
 
     train_split = 'preprocess/nslt_{}.json'.format(num_classes)
-    weights = 'archived/asl2000/FINAL_nslt_2000_iters=5104_top1=32.48_top5=57.31_top10=66.31.pt'
-
+    # weights = 'archived/asl2000/FINAL_nslt_2000_iters=5104_top1=32.48_top5=57.31_top10=66.31.pt'
+    weights = 'archived/asl100/FINAL_nslt_100_iters=896_top1=65.89_top5=84.11_top10=89.92.pt'
     run(mode=mode, root=root, save_model=save_model, train_split=train_split, weights=weights)

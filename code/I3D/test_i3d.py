@@ -117,7 +117,7 @@ def run(init_lr=0.1,
 
     for data in dataloaders["test"]:
         inputs, labels, video_id = data  # inputs: b, c, t, h, w
-
+        print(labels[0].item())
         per_frame_logits = i3d(inputs)
 
         predictions = torch.max(per_frame_logits, dim=2)[0]
